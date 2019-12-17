@@ -11,6 +11,10 @@ class MyComponents(context: ApplicationLoader.Context)
     extends BuiltInComponentsFromContext(context)
     with play.filters.HttpFiltersComponents {
 
+  LoggerConfigurator(context.environment.classLoader).foreach {
+    _.configure(context.environment, context.initialConfiguration, Map.empty)
+  }
+
   lazy val homeController: _root_.controllers.HomeController =
     new _root_.controllers.HomeController(
       controllerComponents,
