@@ -29,10 +29,11 @@ class HomeController(cc: ControllerComponents, lifecycle: ApplicationLifecycle)(
   println("instanciated driver")
 
   lifecycle.addStopHook { () =>
-    driver.close()
-    println("closed driver")
-    scala.concurrent.Future.successful({})
+    driver.close().andThen { _ =>
+      println("closed driver")
+    }
   }
+
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
