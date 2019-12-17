@@ -1,14 +1,26 @@
 package controllers
 
 import javax.inject.Inject
-
 import play.api.mvc._
+import play.api.inject.ApplicationLifecycle
+import reactivemongo.api._
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
   */
-class HomeController(cc: ControllerComponents) extends AbstractController(cc) {
+class HomeController(cc: ControllerComponents, lifecycle: ApplicationLifecycle)(
+    implicit ec: scala.concurrent.ExecutionContext
+) extends AbstractController(cc) {
+
+  val driver = new AsyncDriver()
+  println("instanciated driver")
+
+  lifecycle.addStopHook { () =>
+    driver.close()
+    println("closed driver")
+    scala.concurrent.Future.successful({})
+  }
 
   /**
     * Create an Action to render an HTML page with a welcome message.
