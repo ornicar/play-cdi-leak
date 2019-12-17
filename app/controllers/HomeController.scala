@@ -13,6 +13,18 @@ class HomeController(cc: ControllerComponents, lifecycle: ApplicationLifecycle)(
     implicit ec: scala.concurrent.ExecutionContext
 ) extends AbstractController(cc) {
 
+  /* Play logging:
+   * ----------------
+   * instanciated driver
+   * [info] play.api.Play - Application started (Dev) (no global state)
+   * [info] p.c.s.AkkaHttpServer - Stopping server...
+   * closed driver
+   * ----------------
+   * No memory is reclaimed between two `run`s.
+   * All previous instances and classes remain loaded forever.
+   * To observe, run:
+   * jmap -clstats \$(jps | grep sbt-launch.jar | cut -f1 -d' ') | egrep HomeController
+   */
   val driver = new AsyncDriver()
   println("instanciated driver")
 
@@ -21,13 +33,6 @@ class HomeController(cc: ControllerComponents, lifecycle: ApplicationLifecycle)(
     println("closed driver")
     scala.concurrent.Future.successful({})
   }
-
-  /**
-    * Create an Action to render an HTML page with a welcome message.
-    * The configuration in the `routes` file means that this method
-    * will be called when the application receives a `GET` request with
-    * a path of `/`.
-    */
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
