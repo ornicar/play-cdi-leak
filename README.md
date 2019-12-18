@@ -23,12 +23,13 @@ Just an application loader from which the classloader leak is triggered.
 sbt
 run
 ```
-Now load http://127.0.0.1:9000 (it's a 404, there's no routes).
-Then press <enter> to stop the run.
-Observe that classes are not unloaded, using any of these:
 
-`jmap -clstats $(jps | grep sbt-launch.jar | cut -f1 -d' ') | head -n -1 | egrep MyComponents`
-`jmap -clstats $(jps | grep sbt-launch.jar | cut -f1 -d' ') | wc -l`
-`visualvm`
+- Load http://127.0.0.1:9000 (it's a 404, there's no routes).
+- Press <enter> to stop the run.
+- Observe that classes are not unloaded, using any of these:
+  - `jmap -clstats $(jps | grep sbt-launch.jar | cut -f1 -d' ') | head -n -1 | egrep MyComponents`
+  - `jmap -clstats $(jps | grep sbt-launch.jar | cut -f1 -d' ') | wc -l`
+  - `visualvm`
+  - any tool showing loaded/unloaded classes
 
-More `run`s will show that more and more classes get loaded, and none unloaded.
+Further `run`s will show that more and more classes get loaded, and none unloaded.
