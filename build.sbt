@@ -5,7 +5,7 @@ lazy val root = (project in file("."))
     version := "1.0-SNAPSHOT",
     scalaVersion := "2.13.1",
     libraryDependencies ++= Seq(
-      "io.kamon" %% "kamon-bundle" % "2.0.4"
+      "io.lettuce"            % "lettuce-core"                    % "5.2.1.RELEASE"
     ),
     scalacOptions ++= List(
       "-encoding", "utf8",
