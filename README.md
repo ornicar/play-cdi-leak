@@ -8,7 +8,7 @@ In this branch, the leak is caused by `kamon.Kamon.counter("foo")` in MyApplicat
 ## Demo project
 
 This is a bare-bone playframework project for demonstrating classloader leaks in dev run workflow.
-No routes, no controllers, no templates, no dependency injection.
+No routes, no controllers, no templates.
 Just an application loader from which the classloader leak is triggered.
 
 ## My setup
@@ -27,7 +27,7 @@ run
 ```
 
 - Load http://127.0.0.1:9000 (it's a 404, there's no routes).
-- Press <enter> to stop the run.
+- Press `<enter>` to stop the run.
 - Observe that classes are not unloaded, using any of these:
   - `jmap -clstats $(jps | grep sbt-launch.jar | cut -f1 -d' ') | head -n -1 | egrep MyComponents`
   - `jmap -clstats $(jps | grep sbt-launch.jar | cut -f1 -d' ') | wc -l`
