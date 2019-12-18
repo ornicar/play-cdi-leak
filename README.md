@@ -1,7 +1,9 @@
 # PlayFramework dev workflow classloader leaks
 
-Something causes a classloader leak and prevents any memory from being reclaimed after a run.
+Several factors can cause a classloader leak and prevents any memory from being reclaimed after a run.
 This causes OOM after a few runs, depending on the application size, and makes play dev workflow unusable.
+
+In this branch, the leak is caused by `kamon.Kamon.counter("foo")` in MyApplicationLoader.scala.
 
 ## Demo project
 

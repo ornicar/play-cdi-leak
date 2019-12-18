@@ -18,7 +18,7 @@ class MyComponents(context: ApplicationLoader.Context)
   // and prevents any memory from being reclaimed after a run.
   // This causes OOM after a few runs, depending on the application size,
   // and makes play dev workflow unusable.
-  kamon.Kamon.counter("uh")
+  kamon.Kamon.counter("foo")
 
   lazy val httpFilters = Seq()
 
