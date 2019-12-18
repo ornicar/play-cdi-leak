@@ -3,7 +3,14 @@
 Several factors can cause a classloader leak and prevents any memory from being reclaimed after a run.
 This causes OOM after a few runs, depending on the application size, and makes play dev workflow unusable.
 
-In this branch, the leak is caused by `kamon.Kamon.counter("foo")` in MyApplicationLoader.scala.
+In this branch, the leak is caused by `Foo.conn = redisClient.connectPubSub()` in MyApplicationLoader.scala.
+
+It seems that when a scala `object` has a reference to a resource,
+it prevents the resource from being released after a `run`,
+and causes the entire application instances and classes to remain loaded forever.
+
+It's arguably not great to have a reference a resource in an `object`,
+but I see many reasons why it would happen, and third party libraries like Kamon apparently do it.
 
 ## Demo project
 
