@@ -14,10 +14,10 @@ Just an application loader from which the classloader leak is triggered.
 ## My setup
 
 - Linux 5.4.2
-- openjdk version "13.0.1" 2019-10-15
-- scala 2.13.1
-- playframework 2.7.4
-- sbt 1.3.2
+- openjdk 11.0.5
+- scala 2.12.10
+- playframework 2.6.25
+- sbt 1.2.8
 
 ## Reproduce the leak
 
