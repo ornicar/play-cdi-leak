@@ -17,7 +17,7 @@ Just an application loader from which the classloader leak is triggered.
 - openjdk 11.0.5
 - scala 2.13.1
 - playframework 2.8.0
-- sbt 1.12.8
+- sbt 0.13.18
 
 ## Reproduce the leak
 
