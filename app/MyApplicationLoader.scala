@@ -1,9 +1,5 @@
-import java.util.concurrent.atomic.AtomicReference
-
 import play.api._
 import play.api.routing.Router
-import io.lettuce.core._
-import io.lettuce.core.pubsub.StatefulRedisPubSubConnection
 
 class MyApplicationLoader extends ApplicationLoader {
   def load(context: ApplicationLoader.Context): Application = {
@@ -18,24 +14,13 @@ class MyComponents(context: ApplicationLoader.Context)
     _.configure(context.environment, context.initialConfiguration, Map.empty)
   }
 
-  lazy val httpFilters = Seq.empty
+  // This line causes a classloader leak,
+  // and prevents any memory from being reclaimed after a run.
+  // This causes OOM after a few runs, depending on the application size,
+  // and makes play dev workflow unusable.
+  kamon.Kamon.counter("foo")
+
+  lazy val httpFilters = Seq()
+
   lazy val router: Router = new _root_.router.Routes(httpErrorHandler)
-
-  val redisClient = RedisClient create RedisURI.create("redis://127.0.0.1")
-
-  // This line causes a classloader leak because it's not managed inside the
-  // application lifecycle.
-  // See https://www.playframework.com/documentation/2.7.x/ScalaDependencyInjection#Stopping/cleaning-up
-  Foo.conn.set(redisClient.connectPubSub())
-
-  applicationLifecycle.addStopHook { () =>
-    scala.concurrent.Future {
-      Foo.conn.set(null)
-      redisClient.shutdown()
-    }
-  }
-}
-
-object Foo {
-  var conn = new AtomicReference[StatefulRedisPubSubConnection[String, String]]()
 }
